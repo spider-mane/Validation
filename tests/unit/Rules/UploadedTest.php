@@ -17,6 +17,7 @@ use PHPUnit\Framework\SkippedTestError;
 use Respect\Validation\Test\RuleTestCase;
 use SplFileInfo;
 use stdClass;
+
 use function extension_loaded;
 use function uopz_set_return;
 
@@ -32,24 +33,6 @@ use function uopz_set_return;
 final class UploadedTest extends RuleTestCase
 {
     public const UPLOADED_FILENAME = 'uploaded.ext';
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function setUp(): void
-    {
-        if (!extension_loaded('uopz')) {
-            throw new SkippedTestError('Extension "uopz" is required to test "Uploaded" rule');
-        }
-
-        uopz_set_return(
-            'is_uploaded_file',
-            static function (string $filename): bool {
-                return $filename === UploadedTest::UPLOADED_FILENAME;
-            },
-            true
-        );
-    }
 
     /**
      * {@inheritDoc}
@@ -78,5 +61,23 @@ final class UploadedTest extends RuleTestCase
             [$rule, 1],
             [$rule, new stdClass()],
         ];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function setUp(): void
+    {
+        if (!extension_loaded('uopz')) {
+            throw new SkippedTestError('Extension "uopz" is required to test "Uploaded" rule');
+        }
+
+        uopz_set_return(
+            'is_uploaded_file',
+            static function (string $filename): bool {
+                return $filename === UploadedTest::UPLOADED_FILENAME;
+            },
+            true
+        );
     }
 }

@@ -20,6 +20,7 @@ use Respect\Validation\Rules\AllOf;
 use Respect\Validation\Rules\Key;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 use function count;
 
 /**
@@ -169,7 +170,7 @@ use function count;
  * @method static Validator version()
  * @method static Validator videoUrl(string $service = null)
  * @method static Validator vowel(string ...$additionalChars)
- * @method static Validator when(Validatable $if, Validatable $then, Validatable $when = null)
+ * @method static Validator when(Validatable $if, Validatable $then, Validatable $else = null)
  * @method static Validator writable()
  * @method static Validator xdigit(string ...$additionalChars)
  * @method static Validator yes($useLocale = false)
@@ -180,6 +181,14 @@ use function count;
  */
 final class Validator extends AllOf
 {
+    /**
+     * Create instance validator.
+     */
+    public static function create(): self
+    {
+        return new self();
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -220,13 +229,5 @@ final class Validator extends AllOf
         $this->addRule(Factory::getDefaultInstance()->rule($ruleName, $arguments));
 
         return $this;
-    }
-
-    /**
-     * Create instance validator.
-     */
-    public static function create(): self
-    {
-        return new self();
     }
 }
